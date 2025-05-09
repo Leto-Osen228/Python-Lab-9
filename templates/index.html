@@ -1,35 +1,46 @@
-<html>
-<head>
-    <title>Best store!</title>
-    <script type="text/javascript" src="/static/update.js"></script>
-    <link href="static/store.css" rel="stylesheet">
-</head>
+{% extends "base.html" %}
 
-<body>
-    <h1>Furniture store:</h1>
-    <h3>Add new product:</h3>
-    <form>
-        <div>
-            <input type="text" name="prod_name" id="prod_name">
-            <label for="prod_name">Product name</label>
-        </div>
-        <div>
-            <input type="number" name="price" id="price">
-            <label for="price">Price (rub.)</label>
-        </div>
-        <button onClick="addProduct()">Add</button>
-    </form>
-    <ul>
-        {% for product in products_list %}
-        <li>
-            <div>
-                <div>{{ product['prod_name'] }}</div>
-                <div>{{ product['price'] }} rub.</div>
-                <input value="{{product['id']}}" onChange="updateProd(this)" name="in_stock" type="checkbox" {% if product.in_stock %} checked {% endif %}>
-                <label for="in_stock">In stock</label>
+{% block content %}
+    <section class="review-form">
+        <h2>Оставьте свой отзыв</h2>
+        <form method="POST">
+            <div class="textarea-container">
+                <textarea id="text" name="text" required placeholder="Поделитесь своими впечатлениями..."></textarea>
             </div>
-        </li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+            <div class="form-group">
+                <label>Ваша оценка:</label>
+                <div class="star-rating">
+                    {% for i in range(0, 5) %}
+                        <input type="radio" id="star{{i}}" name="rate" value="{{i}}" {% if i == 5 %}checked{% endif %}>
+                        <label for="star{{i}}">★</label>
+                    {% endfor %}
+                </div>
+            </div>
+            <button type="submit">
+                <span>Отправить отзыв</span>
+            </button>
+        </form>
+    </section>
+
+    <section class="reviews-list">
+        <h2>Отзывы наших клиентов</h2>
+        {% if reviews %}
+            {% for review in reviews %}
+                <div class="review">
+                    <div class="review-rate">
+                        Оценка: {{review.rate}}/5
+                        <div class="stars">
+                            {% for i in range(review.rate) %}<span>★</span>{% endfor %}
+                            {% for i in range(5 - review.rate) %}<span>☆</span>{% endfor %}
+                        </div>
+                    </div>
+                    <div class="review-text">{{review.text}}</div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-reviews">
+                <p>Пока нет отзывов. Будьте первым, кто оставит отзыв!</p>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}
