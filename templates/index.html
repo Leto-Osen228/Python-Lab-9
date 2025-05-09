@@ -10,8 +10,9 @@
             <div class="form-group">
                 <label>Ваша оценка:</label>
                 <div class="star-rating">
-                    {% for i in range(0, 5) %}
-                        <input type="radio" id="star{{i}}" name="rate" value="{{i}}" {% if i == 5 %}checked{% endif %}>
+                    {% for i in range(5, 0, -1) %}
+                        <input type="radio" id="star{{i}}" name="rate" value="{{i}}" 
+                        {% if i == 3 %}checked{% endif %}>
                         <label for="star{{i}}">★</label>
                     {% endfor %}
                 </div>
